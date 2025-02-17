@@ -52,7 +52,10 @@ fun LocalizacionesPredefinidas() = listOf(
     Triple("Lugo", 43.0125, -7.5583),
     Triple("Ourense", 42.3409, -7.8641)
 )
-
+// Marcar estas casillas para que el código funcione correctamente: En la sección "Daily Weather Variables", marcar las siguientes opciones:
+// Precipitation Sum (mm) → precipitation_sum
+// 2m Temperature Max (°C) → temperature_2m_max
+// 2m Temperature Min (°C) → temperature_2m_min
 fun fetchWeatherData(latitude: Double, longitude: Double): WeatherResponse? {
     val url = "https://archive-api.open-meteo.com/v1/archive?latitude=$latitude&longitude=$longitude" +
             "&start_date=2023-01-01&end_date=2023-12-31&daily=precipitation_sum,temperature_2m_max,temperature_2m_min&timezone=auto"
