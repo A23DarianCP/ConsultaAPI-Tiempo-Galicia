@@ -40,11 +40,11 @@ fun RecojerCoordenadas(): Triple<String, Double, Double> {
 
     return if (lat != null && lon != null) Triple("Ubicación Personalizada", lat, lon)
     else {
-        println(" Coordenadas inválidas. Se usarán ciudades predefinidas.")
+        println("Coordenadas inválidas. Se usarán ciudades predefinidas.")
         LocalizacionesPredefinidas().first()
     }
 }
-dad
+
 fun LocalizacionesPredefinidas() = listOf(
     Triple("Santiago de Compostela", 42.8805, -8.5463),
     Triple("A Coruña", 43.3623, -8.4115),
@@ -52,10 +52,7 @@ fun LocalizacionesPredefinidas() = listOf(
     Triple("Lugo", 43.0125, -7.5583),
     Triple("Ourense", 42.3409, -7.8641)
 )
-// Marcar estas casillas para que el código funcione correctamente: En la sección "Daily Weather Variables", marcar las siguientes opciones:
-// Precipitation Sum (mm) → precipitation_sum
-// 2m Temperature Max (°C) → temperature_2m_max
-// 2m Temperature Min (°C) → temperature_2m_min
+
 fun fetchWeatherData(latitude: Double, longitude: Double): WeatherResponse? {
     val url = "https://archive-api.open-meteo.com/v1/archive?latitude=$latitude&longitude=$longitude" +
             "&start_date=2023-01-01&end_date=2023-12-31&daily=precipitation_sum,temperature_2m_max,temperature_2m_min&timezone=auto"
@@ -67,18 +64,18 @@ fun fetchWeatherData(latitude: Double, longitude: Double): WeatherResponse? {
         ).body()
 
         if (response.contains("\"error\":true")) {
-            println(" Error en la respuesta de la API para ($latitude, $longitude): $response")
+            println("Error en la respuesta de la API para ($latitude, $longitude): $response")
             null
         } else Json { ignoreUnknownKeys = true }.decodeFromString(response)
     } catch (e: Exception) {
-        println(" Error al obtener datos para ($latitude, $longitude): ${e.message}")
+        println("Error al obtener datos para ($latitude, $longitude): ${e.message}")
         null
     }
 }
 
 fun analyzeWeatherData(weatherData: List<Pair<String, WeatherResponse>>) {
     if (weatherData.isEmpty()) {
-        println(" No hay datos disponibles para analizar.")
+        println("No hay datos disponibles para analizar.")
         return
     }
 
@@ -90,15 +87,12 @@ fun analyzeWeatherData(weatherData: List<Pair<String, WeatherResponse>>) {
         val hottestDay = data.daily?.temperature_2m_max?.maxOrNull()
         val coldestDay = data.daily?.temperature_2m_min?.minOrNull()
 
-        println(
-            """
-             $name
-            - Lluvia total: $totalRain mm
-            - Temp. media: $avgTemp°C
-            - Día más caluroso: ${hottestDay ?: "N/A"}°C
-            - Día más frío: ${coldestDay ?: "N/A"}°C
-            """.trimIndent()
-        )
+        println("$name")
+        println("- Lluvia total: $totalRain mm")
+        println("- Temp. media: $avgTemp°C")
+        println("- Día más caluroso: ${hottestDay ?: "N/A"}°C")
+        println("- Día más frío: ${coldestDay ?: "N/A"}°C")
+        println()
 
         Triple(name, totalRain, avgTemp)
     }
@@ -106,7 +100,7 @@ fun analyzeWeatherData(weatherData: List<Pair<String, WeatherResponse>>) {
     val mostRainy = results.maxByOrNull { it.second }
     val hottest = results.maxByOrNull { it.third }
 
-    println("\n **Resumen Final**:")
-    println(" Lugar más lluvioso: ${mostRainy?.first ?: "N/A"} con ${mostRainy?.second ?: "N/A"} mm de lluvia.")
-    println(" Lugar más caluroso: ${hottest?.first ?: "N/A"} con temperatura media de ${hottest?.third ?: "N/A"}°C.")
+    println("**Resumen Final**:")
+    println("Lugar más lluvioso: ${mostRainy?.first ?: "N/A"} con ${mostRainy?.second ?: "N/A"} mm de lluvia.")
+    println("Lugar más caluroso: ${hottest?.first ?: "N/A"} con temperatura media de ${hottest?.third ?: "N/A"}°C.")
 }
